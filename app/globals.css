@@ -25,3 +25,14 @@ body {
     text-wrap: balance;
   }
 }
+
+.input {
+  @apply h-[56px] max-w-[491px];
+}
+.error {
+  @apply text-sm text-red-600;
+}
+
+.heading {
+  @apply font-bold text-4xl md:text-5xl text-center;
+}

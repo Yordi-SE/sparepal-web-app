@@ -11,6 +11,18 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "color-1": "#ED1641",
+        "color-2": "#870D25",
+      },
+      width: {
+        "width-1": "758px",
+      },
+      height: {
+        "height-1": "939px",
+        "height-2": "570px",
+      },
+      fontFamily: {
+        Krona: ["Krona One", "sans-serif"],
       },
     },
   },
