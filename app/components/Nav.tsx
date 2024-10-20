@@ -8,8 +8,9 @@ import {
 import { cn } from "@/lib/utils";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { div } from "framer-motion/client";
 export const navItems = [
   { name: "Home", link: "#home" },
 
@@ -23,7 +24,34 @@ export const navItems = [
 ];
 
 function Nav() {
-  return <FloatingNav navItems={navItems} />;
+  const [toggle, setToggle] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const handleToggle = () => {
+    setToggle(!toggle);
+  };
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  return (
+    <>
+      <div className="fixed sm:hidden flex  top-0 items-center pr-10 left-0 right-0 h-[50px] bg-slate-500 z-[6000] gap-1 justify-between overflow-hidden">
+        <img src="/company-logo.png" alt="" className="w-[100px]" />
+        <button className="flex flex-col gap-1" onClick={handleToggle}>
+          <div className="border-2 border-black w-[30px]"></div>
+          <div className="border-2 border-black w-[30px]"></div>
+          <div className="border-2 border-black w-[30px]"></div>
+        </button>
+      </div>
+      {(toggle || windowWidth >= 640) && <FloatingNav navItems={navItems} />}
+    </>
+  );
 }
 
 export const FloatingNav = ({
@@ -46,8 +74,9 @@ export const FloatingNav = ({
     // Check if current is not undefined and is a number
     if (typeof current === "number") {
       let direction = current! - scrollYProgress.getPrevious()!;
-
-      if (
+      if (window.innerWidth < 640) {
+        setVisible(true);
+      } else if (
         scrollYProgress.get() < 0.05 ||
         !(document.body.scrollHeight > window.innerHeight)
       ) {
@@ -64,7 +93,7 @@ export const FloatingNav = ({
   });
   const style =
     (scrollYProgress.get() < 0.05 ? "dark:text-white " : "") +
-    "flex max-w-fit md:min-w-[90vw]  fixed z-[5000] top-10 inset-x-0 mx-auto px-10 py-5 rounded-lg border border-black/.1 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] items-center justify-evenly space-x-4";
+    "flex sm:max-w-fit md:min-w-[90vw] flex-col sm:flex-row  fixed z-[5000] sm:top-10 top-[50px] inset-x-0 mx-auto px-10 py-5     sm:rounded-lg border border-black/.1 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] items-center justify-evenly space-x-4 overflow-hidden";
   return (
     <AnimatePresence>
       <motion.div
@@ -89,27 +118,29 @@ export const FloatingNav = ({
         style={{
           backdropFilter:
             scrollYProgress.get() < 0.05 ? "" : "blur(16px) saturate(180%)",
-          backgroundColor:
-            scrollYProgress.get() < 0.05
-              ? "bg-transparent  "
-              : "rgba(17, 25, 40, 0.75)",
+          backgroundColor: 
+            !(window.innerWidth < 640) && (scrollYProgress.get() < 0.05)
+              ? " bg-transparent "
+              : " rgba(17, 25, 40, 0.75) ",
           borderRadius: "12px",
           border: "1px solid rgba(255, 255, 255, 0.125)",
         }}
       >
+        <img src="/company-logo.png" alt="" className="w-[100px] h-[20px]" />
         {navItems.map((navItem: any, idx: number) => (
-          <Link
-            key={`link=${idx}`}
-            href={navItem.link}
-            className={cn(
-              "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
-            )}
-          >
-            <span className="block sm:hidden">{navItem.icon}</span>
-            {/* add !cursor-pointer */}
-            {/* remove hidden sm:block for the mobile responsive */}
-            <span className=" text-sm !cursor-pointer">{navItem.name}</span>
-          </Link>
+          <>
+            <Link
+              key={`link=${idx}`}
+              href={navItem.link}
+              className={cn(
+                "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
+              )}
+            >
+              {/* add !cursor-pointer */}
+              {/* remove hidden sm:block for the mobile responsive */}
+              <span className=" text-sm !cursor-pointer">{navItem.name}</span>
+            </Link>
+          </>
         ))}
         {/* remove this login btn */}
         {/* <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">

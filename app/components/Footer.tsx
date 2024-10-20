@@ -5,8 +5,8 @@ import React from "react";
 function Footer() {
   return (
     <div className="flex flex-col items-center">
-      <div className="h-fit flex flex-col gap-5 sm:gap-0 sm:flex-row text-white w-full justify-evenly pt-14 items-center">
-        <div className="h-full flex flex-col items-start justify-start sm:gap-3 gap-1">
+      <div className="h-fit flex flex-col gap-5 sm:gap-0 sm:flex-row text-white w-full justify-evenly pt-14 items-center sm:items-start">
+        <div className="h-full flex flex-col items-center  sm:items-start justify-start sm:gap-3 gap-1">
           <h1 className="text-3xl">Contact Us</h1>
           <div>
             <div className="flex flex-col gap-5">
@@ -39,7 +39,12 @@ function Footer() {
                 </div>
               </div>
             </div>
-          </div>
+          </div>{" "}
+          <img
+            src="/company-logo.png"
+            alt=""
+            className="lg:w-[300px]  sm:w-[200px] max-w-[300px]"
+          />
         </div>
         <div className="h-full flex flex-col items-start sm:items-start justify-start sm:gap-3 gap-1">
           <h1 className="text-3xl">Company</h1>
@@ -73,7 +78,7 @@ function Footer() {
             </Link>
           </div>
         </div>
-        <div className="h-full flex flex-col items-start sm:items-start justify-start sm:gap-3 gap-1">
+        <div className="h-full flex flex-col items-start  justify-start sm:gap-3 gap-1">
           <h1 className="text-3xl">Get in Touch</h1>
           <div className="flex flex-col gap-2">
             <label htmlFor="email" className="font-extralight">

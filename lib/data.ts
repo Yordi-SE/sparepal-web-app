@@ -34,18 +34,18 @@ export const Product = [
 
 export const data = [
   {
-    id:1,
+    id: 1,
     img: "/b-1.jpg",
-    title: "SPAREPAL",
-    desc: "revolutionizing the Ethiopian automotive spare parts market",
+    title: "ALL AT ONE",
+    desc: "Revolutionizing Ethiopian Automotive Spare Parts Market",
     sub_desc:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non diam quam.",
   },
   {
-    id:2,
+    id: 2,
     img: "/b-2.jpg",
     title: "REALIABLE",
-    desc: "revolutionizing the Ethiopian automotive spare parts market",
+    desc: "Revolutionizing Ethiopian Automotive Spare Parts Market",
     sub_desc:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non diam quam.",
   },

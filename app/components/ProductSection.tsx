@@ -27,8 +27,17 @@ function ProductSection({
           <ProductCard product={product} key={product.id} />
         ))}
       </div>
-      <div className="lg:pl-5 md:pl-2 lg:pr-5 md:pr-2 lg:pt-10  md=:pb-10 sm:pb-5">
-        <img src="/Rectangle-90.svg" alt="" />
+      <div className="lg:pl-5 md:pl-2 lg:pr-5 md:pr-2 lg:pt-10  md=:pb-10 sm:pb-5 relative h-[170px] sm:h-fit">
+        <img src="/Rectangle-90.png" alt="" className="w-full h-full object-fill"/>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <h1 className="text-[#FF0000] text-sm  sm:text-xl md:text-2xl font-extrabold ">
+            BEST SPARE PART SERVICE
+          </h1>
+
+          <p className="text-white font-bold text-sm">
+            Experience The Best Car Services In Automize 
+          </p>
+        </div>
       </div>
     </div>
   );
