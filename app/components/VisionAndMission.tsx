@@ -6,7 +6,7 @@ import { Button } from "./MovingBorder";
 const VisionAndMission = () => {
   return (
     <div className="py-20 w-full">
-      <h1 className="heading text-gray-100">
+      <h1 className=" heading  text-gray-100">
         Our <span className="text-purple-500">Vision And Mission</span>
       </h1>
 

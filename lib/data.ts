@@ -44,7 +44,7 @@ export const data = [
   {
     id: 2,
     img: "/b-2.jpg",
-    title: "REALIABLE",
+    title: "RELIABLE",
     desc: "Revolutionizing Ethiopian Automotive Spare Parts Market",
     sub_desc:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non diam quam.",
