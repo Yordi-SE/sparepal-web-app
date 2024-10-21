@@ -47,7 +47,20 @@ export const FloatingNav = ({
 }) => {
   const [toggle, setToggle] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY); // Vertical scroll position
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   const handleToggle = () => {
     setToggle(!toggle);
   };
@@ -104,12 +117,13 @@ export const FloatingNav = ({
         className={style}
         style={{
           backdropFilter:
-            scrollYProgress.get() < 0.05 ? "" : "blur(16px) saturate(180%)",
+            scrollPosition < 0.05 ? "" : "blur(16px) saturate(180%)",
           backgroundColor:
-            scrollYProgress.get() < 0.05 && windowWidth >= 640
+            scrollPosition < 0.05 && windowWidth >= 640
               ? " rgba(0, 0, 0, 0) "
               : " rgba(17, 25, 40, 0.75) ",
           border: "1px solid rgba(255, 255, 255, 0.125)",
+          transition: "background-color 0.5s ease-in-out",
         }}
       >
         {windowWidth < 640 && (
