@@ -18,7 +18,7 @@ export const navItems = [
   { name: "About Us", link: "#about" },
 
   { name: "Contact Us", link: "#contact" },
-  { name: "Supply", link: "#testimonials" },
+  { name: "Supply", link: "/suppliers_form" },
 
   { name: "Buy", link: "#buy" },
 ];

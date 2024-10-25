@@ -1,5 +1,7 @@
 "use client";
 
+import { useGetSuppliersOptionsQuery } from "@/lib/features/api/apiSlice";
+import { useAppSelector } from "@/lib/hooks";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -17,6 +19,9 @@ type FormData = {
   site_id: string;
 };
 function AddressForm() {
+  const id = localStorage.getItem("companyId");
+  const { isError, isLoading, isFetching, data, isSuccess } =
+    useGetSuppliersOptionsQuery();
   const router = useRouter();
 
   const form = useForm<FormData>();
@@ -24,8 +29,19 @@ function AddressForm() {
   const { errors, isSubmitSuccessful, isSubmitting } = formState;
   const onSubmit = async (data: FormData) => {
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/company-detail-address`
+      const newData = {
+        ...data,
+        company_id: id,
+      };
+      console.log(newData);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/company-detail-address/`,
+        newData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       console.log(data);
     } catch (e) {
@@ -67,13 +83,28 @@ function AddressForm() {
               {...register("region", { required: true })}
               defaultValue=""
             >
-              <option value="" disabled>
-                region
-              </option>
-              <option value="Addis Ababa">Addis Ababa</option>
-              <option value="Oromia">Oromia</option>
-              <option value="Amhara">Amhara</option>
-              <option value="Tigray">Tigray</option>
+              {(isFetching || isLoading) && (
+                <option value="" disabled>
+                  Loading...
+                </option>
+              )}
+              {isError && (
+                <option value="" disabled>
+                  Error Loading Options
+                </option>
+              )}
+              {isSuccess && (
+                <>
+                  <option value="" disabled>
+                    Region
+                  </option>
+                  {data.region.map((choice: string[], index: number) => (
+                    <option key={index} value={choice[0]}>
+                      {choice[0]}
+                    </option>
+                  ))}
+                </>
+              )}
             </select>
           </div>
           <div className=" max-w-[491px] self-end">
@@ -83,12 +114,28 @@ function AddressForm() {
               {...register("zone", { required: true })}
               defaultValue=""
             >
-              <option value="" disabled>
-                zone
-              </option>
-              <option value="Central">Central</option>
-              <option value="East">East</option>
-              <option value="West">West</option>
+              {(isFetching || isLoading) && (
+                <option value="" disabled>
+                  Loading...
+                </option>
+              )}
+              {isError && (
+                <option value="" disabled>
+                  Error Loading Options
+                </option>
+              )}
+              {isSuccess && (
+                <>
+                  <option value="" disabled>
+                    zone
+                  </option>
+                  {data.zone.map((choice: string[], index: number) => (
+                    <option key={index} value={choice[0]}>
+                      {choice[0]}
+                    </option>
+                  ))}
+                </>
+              )}
             </select>
           </div>
           <div className=" max-w-[491px] self-end">
@@ -98,12 +145,28 @@ function AddressForm() {
               {...register("woreda", { required: true })}
               defaultValue=""
             >
-              <option value="" disabled>
-                woreda
-              </option>
-              <option value="red">Red</option>
-              <option value="blue">Blue</option>
-              <option value="green">Green</option>
+              {(isFetching || isLoading) && (
+                <option value="" disabled>
+                  Loading...
+                </option>
+              )}
+              {isError && (
+                <option value="" disabled>
+                  Error Loading Options
+                </option>
+              )}
+              {isSuccess && (
+                <>
+                  <option value="" disabled>
+                    woreda
+                  </option>
+                  {data.woreda.map((choice: string[], index: number) => (
+                    <option key={index} value={choice[0]}>
+                      {choice[0]}
+                    </option>
+                  ))}
+                </>
+              )}
             </select>
           </div>
           <div className=" max-w-[491px] self-end">
@@ -113,12 +176,28 @@ function AddressForm() {
               {...register("kebele", { required: true })}
               defaultValue=""
             >
-              <option value="" disabled>
-                kebele
-              </option>
-              <option value="red">Red</option>
-              <option value="blue">Blue</option>
-              <option value="green">Green</option>
+              {(isFetching || isLoading) && (
+                <option value="" disabled>
+                  Loading...
+                </option>
+              )}
+              {isError && (
+                <option value="" disabled>
+                  Error Loading Options
+                </option>
+              )}
+              {isSuccess && (
+                <>
+                  <option value="" disabled>
+                    kebele
+                  </option>
+                  {data.kebele.map((choice: string[], index: number) => (
+                    <option key={index} value={choice[0]}>
+                      {choice[0]}
+                    </option>
+                  ))}
+                </>
+              )}
             </select>
           </div>
           <div className="flex flex-col  self-end">
@@ -175,12 +254,28 @@ function AddressForm() {
               {...register("site_id", { required: true })}
               defaultValue=""
             >
-              <option value="" disabled>
-                Site ID
-              </option>
-              <option value="red">Red</option>
-              <option value="blue">Blue</option>
-              <option value="green">Green</option>
+              {(isFetching || isLoading) && (
+                <option value="" disabled>
+                  Loading...
+                </option>
+              )}
+              {isError && (
+                <option value="" disabled>
+                  Error Loading Options
+                </option>
+              )}
+              {isSuccess && (
+                <>
+                  <option value="" disabled>
+                    Site ID
+                  </option>
+                  {data.site_id.map((choice: string[], index: number) => (
+                    <option key={index} value={choice[0]}>
+                      {choice[0]}
+                    </option>
+                  ))}
+                </>
+              )}
             </select>
           </div>
         </div>

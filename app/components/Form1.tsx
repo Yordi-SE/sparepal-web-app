@@ -4,6 +4,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useGetSuppliersOptionsQuery } from "@/lib/features/api/apiSlice";
+import { setCompanyId } from "@/lib/features/companyIdSlice";
+import { useAppDispatch } from "@/lib/hooks";
 type FormData = {
   company_name: string;
   tin_number: string;
@@ -17,16 +20,31 @@ type FormData = {
   sub_group_description: string;
 };
 function Form() {
+  const dispatch = useAppDispatch();
   const form = useForm<FormData>();
   const router = useRouter();
-
   const { register, handleSubmit, formState, reset, setError } = form;
   const { errors, isSubmitSuccessful, isSubmitting } = formState;
+
+  const { isError, isLoading, isFetching, data, isSuccess } =
+    useGetSuppliersOptionsQuery();
+
   const onSubmit = async (data: FormData) => {
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/suppliers`);
-      console.log(data);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/suppliers/`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      localStorage.setItem("companyId", response.data.id);
+      console.log("response data", response.data);
     } catch (e) {
+      console.log(data);
+
       console.log(e);
       setError("root", {
         type: "400",
@@ -56,7 +74,7 @@ function Form() {
         onSubmit={handleSubmit(onSubmit)}
         className="rounded-3xl sm:p-20 p-5 shadow-black shadow-lg bg-white"
       >
-        <div className=" grid sm:grid-cols-2 grid-cols- grid-cols-1  gap-3">
+        <div className=" grid sm:grid-cols-2 grid-cols-1  gap-3">
           <div className="flex flex-col ">
             <label htmlFor="company_name" className="font-bold mb-1">
               Company Name
@@ -135,18 +153,33 @@ function Form() {
             <select
               id="legal_status"
               className="w-full h-[56px] border-2"
-              {...register("legal_status", { required: true })}
+              {...register("legal_status", {
+                required: "This field is required",
+              })}
               defaultValue=""
             >
-              <option value="" disabled>
-                Legal Status
-              </option>
-              <option value="Sole Proprietorship">Sole Proprietorship</option>
-              <option value="Partnership">Partnership</option>
-              <option value="Limited Liability Supplier">
-                Limited Liability Supplier
-              </option>
-              <option value="Corporation">Corporation</option>
+              {(isFetching || isLoading) && (
+                <option value="" disabled>
+                  Loading...
+                </option>
+              )}
+              {isError && (
+                <option value="" disabled>
+                  Error Loading Options
+                </option>
+              )}
+              {isSuccess && (
+                <>
+                  <option value="" disabled>
+                    Legal Status
+                  </option>
+                  {data.legal_status.map((choice: string[], index: number) => (
+                    <option key={index} value={choice[0]}>
+                      {choice[0]}
+                    </option>
+                  ))}
+                </>
+              )}
             </select>
             <p className="error">{errors.legal_status?.message}</p>
           </div>
@@ -166,21 +199,40 @@ function Form() {
             <p className="error">{errors.code?.message}</p>
           </div>
           <div className=" self-end max-w-[491px]">
-            <label htmlFor=" business_description"></label>
+            <label htmlFor="business_description"></label>
 
             <select
               className="w-full h-[56px] border-2"
               id=" business_description"
-              {...register("business_description", { required: true })}
+              {...register("business_description", {
+                required: "This field is required",
+              })}
               defaultValue=""
             >
-              <option value="" disabled>
-                Business Description
-              </option>
-              <option value="Retailer">Retailer</option>
-              <option value="Wholesaler">Wholesaler</option>
-              <option value="Distributor">Distributor</option>
-              <option value="Manufacturer">Manufacturer</option>
+              {(isFetching || isLoading) && (
+                <option value="" disabled>
+                  Loading...
+                </option>
+              )}
+              {isError && (
+                <option value="" disabled>
+                  Error Loading Options
+                </option>
+              )}
+              {isSuccess && (
+                <>
+                  <option value="" disabled>
+                    Business Description
+                  </option>
+                  {data.business_description.map(
+                    (choice: string[], index: number) => (
+                      <option key={index} value={choice[0]}>
+                        {choice[0]}
+                      </option>
+                    )
+                  )}
+                </>
+              )}
             </select>
             <p className="error">{errors.business_description?.message}</p>
           </div>
@@ -204,16 +256,35 @@ function Form() {
             <select
               className="w-full h-[56px] border-2"
               id=" sub_group_description"
-              {...register("sub_group_description", { required: true })}
+              {...register("sub_group_description", {
+                required: "This field is required",
+              })}
               defaultValue=""
             >
-              <option value="" disabled>
-                Sub-Group Description:
-              </option>
-              <option value="Automotive Parts">Automotive Parts</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Machinery">Machinery</option>
-              <option value="Tools">Tools</option>
+              {(isFetching || isLoading) && (
+                <option value="" disabled>
+                  Loading...
+                </option>
+              )}
+              {isError && (
+                <option value="" disabled>
+                  Error Loading Options
+                </option>
+              )}
+              {isSuccess && (
+                <>
+                  <option value="" disabled>
+                    Sub-Group Description:
+                  </option>
+                  {data.sub_group_description.map(
+                    (choice: string[], index: number) => (
+                      <option key={index} value={choice[0]}>
+                        {choice[0]}
+                      </option>
+                    )
+                  )}
+                </>
+              )}
             </select>
             <p className="error">{errors.sub_group_description?.message}</p>
           </div>
@@ -221,7 +292,10 @@ function Form() {
         <div className="w-full mt-10 flex items-end justify-end">
           <button
             type="submit"
-            className={"bg-color-1 p-1 text-white font-bold rounded-lg " + (isSubmitting ? " w-fit"  : " w-20")}
+            className={
+              "bg-color-1 p-1 text-white font-bold rounded-lg " +
+              (isSubmitting ? " w-fit" : " w-20")
+            }
             disabled={isSubmitting}
           >
             {isSubmitting ? "Submitting..." : "Next"}
