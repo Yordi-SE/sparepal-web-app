@@ -60,13 +60,8 @@ function AddressForm() {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <div className="bg-color-1 sm:p-7 flex flex-col gap-10">
+    <div className=" sm:p-7 flex flex-col gap-10">
       <div className="flex sm:flex-row flex-col justify-evenly items-center relative">
-        <img
-          src={"/logo_sparepal_2.png"}
-          alt="Logo"
-          className="md:w-48 sm:w-36 w-20 h-full sm:absolute left-0 "
-        />
         <h1 className="md:text-4xl sm:text-2xl text-lg font-bold align-middle">
           Company Detail Address
         </h1>
@@ -221,11 +216,16 @@ function AddressForm() {
             </label>
             <input
               className="input border-2 pl-3"
-              type="text"
+              type="tel"
               id="business_phone_number"
-              placeholder="Enter House Business Phone Number"
+              placeholder="0945678900"
               {...register("business_phone_number", {
                 required: "This field is required",
+                pattern: {
+                  value:
+                    /^\+?(\d{1,3})?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})$/,
+                  message: "Invalid phone number",
+                },
               })}
             />
             <p className="error">{errors.house_number?.message}</p>

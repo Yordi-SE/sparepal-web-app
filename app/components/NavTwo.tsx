@@ -11,8 +11,8 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { div } from "framer-motion/client";
-export const navItems = [
-  { name: "Home", link: "#home" },
+export const NavTwoItems = [
+  { name: "Home", link: "/" },
 
   { name: "Products", link: "#products" },
   { name: "About Us", link: "#about" },
@@ -23,22 +23,22 @@ export const navItems = [
   { name: "Buy", link: "#buy" },
 ];
 
-function Nav() {
+function NavTwo() {
   return (
     <>
       {/* <div className="fixed sm:hidden flex  top-0 items-center pr-10 left-0 right-0 h-[50px] bg-slate-500  gap-1 justify-between overflow-hidden">
 
       </div> */}
-      <FloatingNav navItems={navItems} />
+      <FloatingNavTwo NavTwoItems={NavTwoItems} />
     </>
   );
 }
 
-export const FloatingNav = ({
-  navItems,
+export const FloatingNavTwo = ({
+  NavTwoItems,
   className,
 }: {
-  navItems: {
+  NavTwoItems: {
     name: string;
     link: string;
     icon?: JSX.Element;
@@ -75,7 +75,7 @@ export const FloatingNav = ({
   }, []);
   const { scrollYProgress } = useScroll();
 
-  // set true for the initial state so that nav bar is visible in the hero section
+  // set true for the initial state so that NavTwo bar is visible in the hero section
   const [visible, setVisible] = useState(true);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
@@ -99,7 +99,7 @@ export const FloatingNav = ({
   });
   const style =
     (scrollYProgress.get() < 0.05 ? " dark:text-white " : "") +
-    " sm:max-w-fit md:min-w-[90vw]  flex items-center justify-around mx-auto fixed z-[5000] sm:top-10  inset-x-0 h-[50px] sm:h-fit sm:rounded-xl  border border-black/.1 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]   sm:overflow-hidden ";
+    "   flex items-center justify-around mx-auto fixed z-[5000]  top-0 inset-x-0 h-[50px] sm:h-fit   border border-black/.1 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]   sm:overflow-hidden ";
   return (
     <AnimatePresence>
       <motion.div
@@ -118,12 +118,8 @@ export const FloatingNav = ({
         style={{
           backdropFilter:
             scrollPosition < 0.05 ? "" : "blur(16px) saturate(180%)",
-          backgroundColor:
-            scrollPosition < 0.05 && windowWidth >= 640
-              ? " rgba(0, 0, 0, 0) "
-              : " rgba(17, 25, 40, 0.75) ",
+          backgroundColor: " rgba(17, 25, 40, 0.75) ",
           border: "1px solid rgba(255, 255, 255, 0.125)",
-          transition: "background-color 0.5s ease-in-out",
         }}
       >
         {windowWidth < 640 && (
@@ -145,11 +141,11 @@ export const FloatingNav = ({
                 className="w-[100px] h-[20px] bg-white"
               />
             )}
-            {navItems.map((navItem: any, idx: number) => (
+            {NavTwoItems.map((NavTwoItem: any, idx: number) => (
               <>
                 <Link
                   key={`link=${idx}`}
-                  href={navItem.link}
+                  href={NavTwoItem.link}
                   className={cn(
                     "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
                   )}
@@ -157,7 +153,7 @@ export const FloatingNav = ({
                   {/* add !cursor-pointer */}
                   {/* remove hidden sm:block for the mobile responsive */}
                   <span className=" text-sm !cursor-pointer">
-                    {navItem.name}
+                    {NavTwoItem.name}
                   </span>
                 </Link>
               </>
@@ -174,4 +170,4 @@ export const FloatingNav = ({
   );
 };
 
-export default Nav;
+export default NavTwo;

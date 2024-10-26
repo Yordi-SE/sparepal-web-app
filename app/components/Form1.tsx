@@ -59,13 +59,8 @@ function Form() {
     }
   }, [isSubmitSuccessful, reset]);
   return (
-    <div className="bg-color-1 sm:p-7 flex flex-col gap-10">
+    <div className=" sm:p-7 flex flex-col gap-10">
       <div className="flex sm:flex-row flex-col justify-evenly items-center relative">
-        <img
-          src={"/logo_sparepal_2.png"}
-          alt="Logo"
-          className="md:w-48 sm:w-36 w-20 h-full sm:absolute left-0 "
-        />
         <h1 className="md:text-4xl sm:text-2xl text-lg font-bold align-middle">
           Company Information
         </h1>
