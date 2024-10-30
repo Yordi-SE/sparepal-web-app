@@ -1,12 +1,10 @@
 "use client";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetSuppliersOptionsQuery } from "@/lib/features/api/apiSlice";
-import { setCompanyId } from "@/lib/features/companyIdSlice";
-import { useAppDispatch } from "@/lib/hooks";
 type FormData = {
   company_name: string;
   tin_number: string;
@@ -20,7 +18,6 @@ type FormData = {
   sub_group_description: string;
 };
 function Form() {
-  const dispatch = useAppDispatch();
   const form = useForm<FormData>();
   const router = useRouter();
   const { register, handleSubmit, formState, reset, setError } = form;
@@ -57,7 +54,9 @@ function Form() {
     if (isSubmitSuccessful) {
       setFormDisable(true);
       reset();
+
       router.push("/company_detail_form");
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }
   }, [isSubmitSuccessful, reset]);
   return (
@@ -70,7 +69,6 @@ function Form() {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="rounded-3xl sm:p-20 p-5 shadow-black shadow-lg bg-white"
-        aria-disabled={formdisable}
       >
         <div className=" grid sm:grid-cols-2 grid-cols-1  gap-3">
           <div className="flex flex-col ">

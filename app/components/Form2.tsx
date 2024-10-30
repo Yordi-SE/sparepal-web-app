@@ -1,7 +1,6 @@
 "use client";
 
 import { useGetSuppliersOptionsQuery } from "@/lib/features/api/apiSlice";
-import { useAppSelector } from "@/lib/hooks";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,7 +13,6 @@ type FormData = {
   capital: string;
   company: string;
   zone: string;
-  kebele: string;
   business_phone_number: string;
   site_id: string;
 };
@@ -36,7 +34,7 @@ function AddressForm() {
         company_id: id,
       };
       console.log(newData);
-      const response = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/company-detail-address/`,
         newData,
         {
@@ -58,6 +56,8 @@ function AddressForm() {
     if (isSubmitSuccessful) {
       setFormDisable(true);
       reset();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+
       router.push("/company_manager_form");
     }
   }, [isSubmitSuccessful, reset]);
@@ -170,38 +170,7 @@ function AddressForm() {
               )}
             </select>
           </div>
-          <div className=" max-w-[491px] self-end">
-            <select
-              disabled={formdisable}
-              className="w-full h-[56px] border-2"
-              id="kebele"
-              {...register("kebele", { required: true })}
-              defaultValue=""
-            >
-              {(isFetching || isLoading) && (
-                <option value="" disabled>
-                  Loading...
-                </option>
-              )}
-              {isError && (
-                <option value="" disabled>
-                  Error Loading Options
-                </option>
-              )}
-              {isSuccess && (
-                <>
-                  <option value="" disabled>
-                    Kebele
-                  </option>
-                  {data.kebele.map((choice: string[], index: number) => (
-                    <option key={index} value={choice[0]}>
-                      {choice[0]}
-                    </option>
-                  ))}
-                </>
-              )}
-            </select>
-          </div>
+
           <div className="flex flex-col  self-end">
             <label htmlFor="house_number " className="font-bold mb-1">
               House Number

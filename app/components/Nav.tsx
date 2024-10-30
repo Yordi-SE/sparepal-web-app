@@ -5,12 +5,12 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
+
 import { cn } from "@/lib/utils";
 
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { div } from "framer-motion/client";
 export const navItems = [
   { name: "Home", link: "#home" },
 
@@ -36,7 +36,6 @@ function Nav() {
 
 export const FloatingNav = ({
   navItems,
-  className,
 }: {
   navItems: {
     name: string;
@@ -46,10 +45,14 @@ export const FloatingNav = ({
   className?: string;
 }) => {
   const [toggle, setToggle] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
+
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
+    setWindowHeight(window.innerHeight);
+
     const handleScroll = () => {
       setScrollPosition(window.scrollY); // Vertical scroll position
     };
@@ -65,6 +68,8 @@ export const FloatingNav = ({
     setToggle(!toggle);
   };
   useEffect(() => {
+    setWindowWidth(window.innerWidth);
+
     const handleResize = () => setWindowWidth(window.innerWidth);
 
     window.addEventListener("resize", handleResize);
@@ -81,10 +86,10 @@ export const FloatingNav = ({
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     // Check if current is not undefined and is a number
     if (typeof current === "number") {
-      let direction = current! - scrollYProgress.getPrevious()!;
+      const direction = current! - scrollYProgress.getPrevious()!;
       if (
         scrollYProgress.get() < 0.05 ||
-        !(document.body.scrollHeight > window.innerHeight)
+        !(document.body.scrollHeight > windowHeight)
       ) {
         // also set true for the initial state
         setVisible(true);
@@ -147,23 +152,32 @@ export const FloatingNav = ({
                 />
               </Link>
             )}
-            {navItems.map((navItem: any, idx: number) => (
-              <>
-                <Link
-                  key={`link=${idx}`}
-                  href={navItem.link}
-                  className={cn(
-                    "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
-                  )}
-                >
-                  {/* add !cursor-pointer */}
-                  {/* remove hidden sm:block for the mobile responsive */}
-                  <span className=" text-sm !cursor-pointer">
-                    {navItem.name}
-                  </span>
-                </Link>
-              </>
-            ))}
+            {navItems.map(
+              (
+                navItem: {
+                  name: string;
+                  link: string;
+                  icon?: JSX.Element;
+                },
+                idx: number
+              ) => (
+                <>
+                  <Link
+                    key={`link=${idx}`}
+                    href={navItem.link}
+                    className={cn(
+                      "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
+                    )}
+                  >
+                    {/* add !cursor-pointer */}
+                    {/* remove hidden sm:block for the mobile responsive */}
+                    <span className=" text-sm !cursor-pointer">
+                      {navItem.name}
+                    </span>
+                  </Link>
+                </>
+              )
+            )}
           </div>
         )}
         {/* remove this login btn */}

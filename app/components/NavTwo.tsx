@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { div } from "framer-motion/client";
+
 export const NavTwoItems = [
   { name: "Home", link: "/" },
 
@@ -36,7 +36,6 @@ function NavTwo() {
 
 export const FloatingNavTwo = ({
   NavTwoItems,
-  className,
 }: {
   NavTwoItems: {
     name: string;
@@ -46,10 +45,12 @@ export const FloatingNavTwo = ({
   className?: string;
 }) => {
   const [toggle, setToggle] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
+    setWindowHeight(window.innerHeight);
     const handleScroll = () => {
       setScrollPosition(window.scrollY); // Vertical scroll position
     };
@@ -65,6 +66,8 @@ export const FloatingNavTwo = ({
     setToggle(!toggle);
   };
   useEffect(() => {
+    setWindowWidth(window.innerWidth);
+
     const handleResize = () => setWindowWidth(window.innerWidth);
 
     window.addEventListener("resize", handleResize);
@@ -81,10 +84,10 @@ export const FloatingNavTwo = ({
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     // Check if current is not undefined and is a number
     if (typeof current === "number") {
-      let direction = current! - scrollYProgress.getPrevious()!;
+      const direction = current! - scrollYProgress.getPrevious()!;
       if (
         scrollYProgress.get() < 0.05 ||
-        !(document.body.scrollHeight > window.innerHeight)
+        !(document.body.scrollHeight > windowHeight)
       ) {
         // also set true for the initial state
         setVisible(true);
@@ -143,23 +146,32 @@ export const FloatingNavTwo = ({
                 />
               </Link>
             )}
-            {NavTwoItems.map((NavTwoItem: any, idx: number) => (
-              <>
-                <Link
-                  key={`link=${idx}`}
-                  href={NavTwoItem.link}
-                  className={cn(
-                    "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
-                  )}
-                >
-                  {/* add !cursor-pointer */}
-                  {/* remove hidden sm:block for the mobile responsive */}
-                  <span className=" text-sm !cursor-pointer">
-                    {NavTwoItem.name}
-                  </span>
-                </Link>
-              </>
-            ))}
+            {NavTwoItems.map(
+              (
+                NavTwoItem: {
+                  name: string;
+                  link: string;
+                  icon?: JSX.Element;
+                },
+                idx: number
+              ) => (
+                <>
+                  <Link
+                    key={`link=${idx}`}
+                    href={NavTwoItem.link}
+                    className={cn(
+                      "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
+                    )}
+                  >
+                    {/* add !cursor-pointer */}
+                    {/* remove hidden sm:block for the mobile responsive */}
+                    <span className=" text-sm !cursor-pointer">
+                      {NavTwoItem.name}
+                    </span>
+                  </Link>
+                </>
+              )
+            )}
           </div>
         )}
         {/* remove this login btn */}

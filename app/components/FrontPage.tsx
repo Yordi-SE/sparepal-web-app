@@ -1,9 +1,7 @@
 "use client";
 
-import { current } from "@reduxjs/toolkit";
-import { div } from "framer-motion/client";
-import React, { useEffect, useRef, useState } from "react";
-
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
 function FrontPage({
   data,
 }: {
@@ -15,9 +13,10 @@ function FrontPage({
     sub_desc: string;
   }[];
 }) {
-  const [windowheight, setWindowHeight] = useState(window.innerHeight);
+  const [windowheight, setWindowHeight] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
+    setWindowHeight(window.innerHeight);
     const handleSize = () => setWindowHeight(window.innerHeight);
 
     window.addEventListener("resize", handleSize);
@@ -39,6 +38,8 @@ function FrontPage({
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     const interval = setInterval(goToNextSlide, 5000);
     return () => clearInterval(interval);
   }, [currentIndex]);
@@ -60,15 +61,16 @@ function FrontPage({
         }}
       >
         {data.map((slide, index) => (
-          <div className="relative flex-shrink-0">
+          <div className="relative flex-shrink-0" key={index}>
             <div
               className={`${height} w-screen  bg-[#221414] relative md:mb-20`}
-              key={index}
             >
-              <img
+              <Image
+                layout="fill"
+                objectFit="cover"
                 src={slide.img}
                 alt=""
-                className="min-w-full h-full md:object-cover sm:object-cover object-cover"
+                className="min-w-full h-full  object-cover"
               />
             </div>
             <div className="absolute top-0 -bottom-2 left-0 right-0 bg-gradient-to-tr  from-[rgba(0,0,0,1)] via-[rgba(0,0,0,0.7)] [rgba(100, 116, 139,0.5)] "></div>

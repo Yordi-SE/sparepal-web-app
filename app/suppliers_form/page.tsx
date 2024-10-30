@@ -1,6 +1,12 @@
+import dynamic from "next/dynamic";
 import React from "react";
-import Form from "../components/Form1";
-import FormPage from "../components/Formpage";
+
+const FormPage = dynamic(() => import("../components/Formpage"), {
+  ssr: false,
+});
+const Form = dynamic(() => import("../components/Form1"), {
+  ssr: false,
+});
 
 function Supplier() {
   return (

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type FormData = {
-  manager_full_name: string;
+  manager_first_name: string;
   manager_phone_number: string;
   last_name: string;
 };
@@ -17,7 +17,7 @@ function ManagerForm() {
   const { errors, isSubmitSuccessful, isSubmitting } = formState;
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/company-manager-detail/`,
         { ...data, company_id: id }
       );
@@ -58,19 +58,19 @@ function ManagerForm() {
         </div>
         <div className=" grid sm:grid-cols-2 grid-cols- grid-cols-1  gap-3">
           <div className="flex flex-col  self-end">
-            <label htmlFor="manager_full_name " className="font-bold mb-1">
-              Manager Full Name
+            <label htmlFor="manager_first_name " className="font-bold mb-1">
+              Manager First Name
             </label>
             <input
               className="input border-2 pl-3"
               type="text"
-              id="manager_full_name"
+              id="manager_first_name"
               placeholder="Enter Manager Full Name"
-              {...register("manager_full_name", {
+              {...register("manager_first_name", {
                 required: "This field is required",
               })}
             />
-            <p className="error">{errors.manager_full_name?.message}</p>
+            <p className="error">{errors.manager_first_name?.message}</p>
           </div>
           <div className="flex flex-col  self-end">
             <label htmlFor="last_name " className="font-bold mb-1">

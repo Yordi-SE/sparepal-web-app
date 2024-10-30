@@ -1,14 +1,22 @@
-import Image from "next/image";
-import FormPage from "./components/Formpage";
-import Form from "./components/Form1";
-import AddressForm from "./components/Form2";
-import ManagerForm from "./components/Form3";
-import Nav from "./components/Nav";
-import ProductSection from "./components/ProductSection";
+import dynamic from "next/dynamic";
 import { data, Product } from "@/lib/data";
-import Footer from "./components/Footer";
-import VisionAndMission from "./components/VisionAndMission";
-import FrontPage from "./components/FrontPage";
+
+const FrontPage = dynamic(() => import("./components/FrontPage"), {
+  ssr: false,
+});
+const ProductSection = dynamic(() => import("./components/ProductSection"), {
+  ssr: false,
+});
+const VisionAndMission = dynamic(() => import("./components/VisionAndMission"), {
+  ssr: false,
+});
+const Footer = dynamic(() => import("./components/Footer"), {
+  ssr: false,
+});
+const Nav = dynamic(() => import("./components/Nav"), {
+  ssr: false,
+});
+
 
 export default function Home() {
   return (

@@ -1,5 +1,8 @@
+import dynamic from "next/dynamic";
 import React from "react";
-import AddressForm from "../components/Form2";
+const AddressForm = dynamic(() => import("../components/Form2"), {
+  ssr: false,
+});
 
 function CompanyDetail() {
   return (

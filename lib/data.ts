@@ -1,6 +1,3 @@
-import exp from "constants";
-import { title } from "process";
-
 export const Product = [
   {
     id: 1,

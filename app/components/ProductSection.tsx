@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import ProductCard from "./ProductCard";
-import { div } from "framer-motion/client";
 
 function ProductSection({
   products,
