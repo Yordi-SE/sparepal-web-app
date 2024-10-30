@@ -4,7 +4,7 @@ import { useGetSuppliersOptionsQuery } from "@/lib/features/api/apiSlice";
 import { useAppSelector } from "@/lib/hooks";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type FormData = {
@@ -22,6 +22,8 @@ function AddressForm() {
   const id = localStorage.getItem("companyId");
   const { isError, isLoading, isFetching, data, isSuccess } =
     useGetSuppliersOptionsQuery();
+  const [formdisable, setFormDisable] = useState(false);
+
   const router = useRouter();
 
   const form = useForm<FormData>();
@@ -54,6 +56,7 @@ function AddressForm() {
   };
   useEffect(() => {
     if (isSubmitSuccessful) {
+      setFormDisable(true);
       reset();
       router.push("/company_manager_form");
     }
@@ -73,6 +76,7 @@ function AddressForm() {
         <div className=" grid sm:grid-cols-2 grid-cols- grid-cols-1  gap-3">
           <div className=" max-w-[491px] self-end">
             <select
+              disabled={formdisable}
               className="w-full h-[56px] border-2"
               id="region"
               {...register("region", { required: true })}
@@ -104,6 +108,7 @@ function AddressForm() {
           </div>
           <div className=" max-w-[491px] self-end">
             <select
+              disabled={formdisable}
               className="w-full h-[56px] border-2"
               id="zone"
               {...register("zone", { required: true })}
@@ -135,6 +140,7 @@ function AddressForm() {
           </div>
           <div className=" max-w-[491px] self-end">
             <select
+              disabled={formdisable}
               className="w-full h-[56px] border-2"
               id="woreda"
               {...register("woreda", { required: true })}
@@ -166,6 +172,7 @@ function AddressForm() {
           </div>
           <div className=" max-w-[491px] self-end">
             <select
+              disabled={formdisable}
               className="w-full h-[56px] border-2"
               id="kebele"
               {...register("kebele", { required: true })}
@@ -184,7 +191,7 @@ function AddressForm() {
               {isSuccess && (
                 <>
                   <option value="" disabled>
-                    kebele
+                    Kebele
                   </option>
                   {data.kebele.map((choice: string[], index: number) => (
                     <option key={index} value={choice[0]}>
@@ -200,6 +207,7 @@ function AddressForm() {
               House Number
             </label>
             <input
+              disabled={formdisable}
               className="input border-2 pl-3"
               type="text"
               id="house_number"
@@ -215,6 +223,7 @@ function AddressForm() {
               Business Phone Number
             </label>
             <input
+              disabled={formdisable}
               className="input border-2 pl-3"
               type="tel"
               id="business_phone_number"
@@ -235,6 +244,7 @@ function AddressForm() {
               capital
             </label>
             <input
+              disabled={formdisable}
               type="text"
               className="input border-2 pl-3"
               placeholder="Enter Description Code"
@@ -249,6 +259,7 @@ function AddressForm() {
             <label htmlFor="Business_description"></label>
 
             <select
+              disabled={formdisable}
               className="w-full h-[56px] border-2"
               id="site_id"
               {...register("site_id", { required: true })}
@@ -286,7 +297,7 @@ function AddressForm() {
               "bg-color-1 p-1 text-white font-bold rounded-lg " +
               (isSubmitting ? " w-fit" : " w-20")
             }
-            disabled={isSubmitting}
+            disabled={isSubmitting || formdisable}
           >
             {isSubmitting ? "Submitting..." : "Next"}
           </button>

@@ -14,10 +14,10 @@ import { div } from "framer-motion/client";
 export const NavTwoItems = [
   { name: "Home", link: "/" },
 
-  { name: "Products", link: "#products" },
-  { name: "About Us", link: "#about" },
+  { name: "Products", link: "/#products" },
+  { name: "About Us", link: "/#about" },
 
-  { name: "Contact Us", link: "#contact" },
+  { name: "Contact Us", link: "/#contact" },
   { name: "Supply", link: "/suppliers_form" },
 
   { name: "Buy", link: "#buy" },
@@ -135,11 +135,13 @@ export const FloatingNavTwo = ({
         {(toggle || windowWidth >= 640) && (
           <div className="flex flex-col sm:flex-row items-center justify-evenly  w-full h-fit space-x-4 absolute sm:static z-[6000]  bg-[#111927bf]   top-[49px] sm:bg-transparent   sm:px-10 sm:py-5">
             {windowWidth >= 640 && (
-              <img
-                src="/company-logo.png"
-                alt=""
-                className="w-[100px] h-[20px] bg-white"
-              />
+              <Link href={"/"}>
+                <img
+                  src="/company-logo.png"
+                  alt=""
+                  className="w-[100px] h-[20px] bg-white"
+                />
+              </Link>
             )}
             {NavTwoItems.map((NavTwoItem: any, idx: number) => (
               <>

@@ -139,11 +139,13 @@ export const FloatingNav = ({
         {(toggle || windowWidth >= 640) && (
           <div className="flex flex-col sm:flex-row items-center justify-evenly  w-full h-fit space-x-4 absolute sm:static z-[6000]  bg-[#111927bf]   top-[49px] sm:bg-transparent   sm:px-10 sm:py-5">
             {windowWidth >= 640 && (
-              <img
-                src="/company-logo.png"
-                alt=""
-                className="w-[100px] h-[20px] bg-white"
-              />
+              <Link href={"/"}>
+                <img
+                  src="/company-logo.png"
+                  alt=""
+                  className="w-[100px] h-[20px] bg-white"
+                />
+              </Link>
             )}
             {navItems.map((navItem: any, idx: number) => (
               <>

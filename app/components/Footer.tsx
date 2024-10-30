@@ -4,7 +4,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center" id="contact">
       <div className="h-fit flex flex-col gap-5 sm:gap-0 sm:flex-row text-white w-full justify-evenly pt-14 items-center sm:items-start">
         <div className="h-full flex flex-col items-center  sm:items-start justify-start sm:gap-3 gap-1">
           <h1 className="text-3xl">Contact Us</h1>

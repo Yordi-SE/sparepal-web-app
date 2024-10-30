@@ -15,7 +15,10 @@ function ProductSection({
   }[];
 }) {
   return (
-    <div className=" text-center  bg-[#110428] md:pt-32 relative pt-20">
+    <div
+      className=" text-center  bg-[#110428] md:pt-32 relative pt-20 "
+      id="products"
+    >
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full sm:w-3/4 h-fit bg-[red]  m-auto inset-x-0 flex items-center justify-center p-5 rounded-3xl shadow-black shadow-2xl border-2 border-black -skew-x-12">
         <h1 className="lg:text-5xl md:text-2xl w-1/2 text-xs xs:text-lg  text-white font-extrabold text-center skew-x-0 ">
           Reliable Spare Part Suppliers In Ethiopia

@@ -25,6 +25,7 @@ function Form() {
   const router = useRouter();
   const { register, handleSubmit, formState, reset, setError } = form;
   const { errors, isSubmitSuccessful, isSubmitting } = formState;
+  const [formdisable, setFormDisable] = useState(false);
 
   const { isError, isLoading, isFetching, data, isSuccess } =
     useGetSuppliersOptionsQuery();
@@ -54,6 +55,7 @@ function Form() {
   };
   useEffect(() => {
     if (isSubmitSuccessful) {
+      setFormDisable(true);
       reset();
       router.push("/company_detail_form");
     }
@@ -68,6 +70,7 @@ function Form() {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="rounded-3xl sm:p-20 p-5 shadow-black shadow-lg bg-white"
+        aria-disabled={formdisable}
       >
         <div className=" grid sm:grid-cols-2 grid-cols-1  gap-3">
           <div className="flex flex-col ">
@@ -79,6 +82,7 @@ function Form() {
               id="company_name"
               placeholder="Enter Company Name"
               className="input border-2 pl-3"
+              disabled={formdisable}
               {...register("company_name", {
                 required: "This field is required",
               })}
@@ -91,6 +95,7 @@ function Form() {
             </label>
             <input
               type="date"
+              disabled={formdisable}
               id="date_registered"
               placeholder=""
               className="input border-2 pl-3"
@@ -105,6 +110,7 @@ function Form() {
               TIN Number
             </label>
             <input
+              disabled={formdisable}
               className="input border-2 pl-3"
               type="text"
               id="tin_number"
@@ -122,6 +128,7 @@ function Form() {
             <input
               type="date"
               className="input border-2 pl-3"
+              disabled={formdisable}
               id="renewed_license_date"
               {...register("renewed_license_date", {
                 required: "This field is required",
@@ -135,6 +142,7 @@ function Form() {
             </label>
             <input
               className="input border-2 pl-3"
+              disabled={formdisable}
               type="text"
               id="license_number"
               placeholder="Enter License Number"
@@ -148,6 +156,7 @@ function Form() {
             <select
               id="legal_status"
               className="w-full h-[56px] border-2"
+              disabled={formdisable}
               {...register("legal_status", {
                 required: "This field is required",
               })}
@@ -184,6 +193,7 @@ function Form() {
             </label>
             <input
               type="text"
+              disabled={formdisable}
               className="input border-2 pl-3"
               placeholder="Enter Description Code"
               id="code"
@@ -197,6 +207,7 @@ function Form() {
             <label htmlFor="business_description"></label>
 
             <select
+              disabled={formdisable}
               className="w-full h-[56px] border-2"
               id=" business_description"
               {...register("business_description", {
@@ -236,6 +247,7 @@ function Form() {
               Sub-Group Code
             </label>
             <input
+              disabled={formdisable}
               type="text"
               className="input border-2 pl-3"
               placeholder="Enter Subgroup Code"
@@ -249,6 +261,7 @@ function Form() {
 
           <div className=" max-w-[491px] self-end">
             <select
+              disabled={formdisable}
               className="w-full h-[56px] border-2"
               id=" sub_group_description"
               {...register("sub_group_description", {
@@ -291,7 +304,7 @@ function Form() {
               "bg-color-1 p-1 text-white font-bold rounded-lg " +
               (isSubmitting ? " w-fit" : " w-20")
             }
-            disabled={isSubmitting}
+            disabled={isSubmitting || formdisable}
           >
             {isSubmitting ? "Submitting..." : "Next"}
           </button>
