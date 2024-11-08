@@ -1,10 +1,10 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { JWT } from "next-auth/jwt";
-import { Session } from "next-auth";
+import { AuthOptions, Session } from "next-auth";
 import { AuthenticatedUser } from "@/types/next-auth";
 
-export const options = {
+export const options: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",

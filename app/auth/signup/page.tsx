@@ -238,8 +238,8 @@ function Signup() {
           </Link>
         </div>
         <p className="text-sm text-gray-500">
-          By clicking 'Continue', you acknowledge that you have read and
-          accepted our{" "}
+          By clicking {"'Continue'"}, you acknowledge that you have read and
+          accepted our
           <Link href="#" className="text-accent-3 text-blue-700">
             Terms of Service
           </Link>{" "}

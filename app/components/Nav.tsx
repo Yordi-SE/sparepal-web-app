@@ -9,11 +9,10 @@ import {
 import { cn } from "@/lib/utils";
 
 import Link from "next/link";
-import { AppProps } from "next/app";
 
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 export const navItems = [
   { name: "Home", link: "#home" },

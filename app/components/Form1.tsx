@@ -5,7 +5,6 @@ import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetSuppliersOptionsQuery } from "@/lib/features/api/apiSlice";
-import { signOut, useSession } from "next-auth/react";
 type FormData = {
   company_name: string;
   tin_number: string;
