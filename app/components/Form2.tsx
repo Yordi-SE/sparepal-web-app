@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetSuppliersOptionsQuery } from "@/lib/features/api/apiSlice";
-import axios from "axios";
+import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,8 @@ type FormData = {
   site_id: string;
 };
 function AddressForm() {
+  const axiosAuth = useAxiosAuth();
+
   const id = localStorage.getItem("companyId");
   const { isError, isLoading, isFetching, data, isSuccess } =
     useGetSuppliersOptionsQuery();
@@ -34,15 +36,8 @@ function AddressForm() {
         company_id: id,
       };
       console.log(newData);
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/company-detail-address/`,
-        newData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axiosAuth.post("/api/company-detail-address/", newData);
+
       console.log(data);
     } catch (e) {
       console.log(e);

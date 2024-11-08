@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 export const NavTwoItems = [
   { name: "Home", link: "/" },
@@ -197,7 +197,7 @@ export const FloatingNavTwo = ({
             )}
             {status == "authenticated" && (
               <Link
-                href="/api/auth/signout"
+                href="/auth/logout"
                 className={cn(
                   "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
                 )}
@@ -206,14 +206,24 @@ export const FloatingNavTwo = ({
               </Link>
             )}
             {status == "unauthenticated" && (
-              <Link
-                href="/api/auth/signin"
-                className={cn(
-                  "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
-                )}
-              >
-                Login
-              </Link>
+              <>
+                <button
+                  className={cn(
+                    "relative  items-center  flex space-x-1 text-white bg-black p-1 text-md hover:bg-white hover:text-neutral-500 rounded-lg"
+                  )}
+                  onClick={() => signIn()}
+                >
+                  Signin
+                </button>
+                <Link
+                  href="/auth/signup"
+                  className={cn(
+                    "relative  items-center  flex space-x-1 text-white bg-black p-1 text-md hover:bg-white hover:text-neutral-500 rounded-lg"
+                  )}
+                >
+                  Signup
+                </Link>
+              </>
             )}
           </div>
         )}

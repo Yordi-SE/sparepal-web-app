@@ -64,11 +64,11 @@ function Signup() {
           </h1>
         </div>
       </div>
-      <div className="w-full p-8   bg-white  ">
+      <div className="w-full p-8   bg-white  space-y-6 ">
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Sign Up Today!
         </h2>
-        <div className="flex w-full m-1 items-center gap-2">
+        <div className="flex w-full  items-center gap-2">
           <div className="flex-grow  bg-gray-800 border h-0"></div>
           <span className="text-gray-400">Or Sign Up with Email</span>
           <div className="flex-grow bg-gray-800 border h-0"></div>

@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -10,6 +10,8 @@ type FormData = {
   last_name: string;
 };
 function ManagerForm() {
+  const axiosAuth = useAxiosAuth();
+
   const id = localStorage.getItem("companyId");
   const [formSuccess, setFormSuccess] = useState("");
   const form = useForm<FormData>();
@@ -17,10 +19,11 @@ function ManagerForm() {
   const { errors, isSubmitSuccessful, isSubmitting } = formState;
   const onSubmit = async (data: FormData) => {
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/company-manager-detail/`,
-        { ...data, company_id: id }
-      );
+      await axiosAuth.post("/api/company-manager-detail/", {
+        ...data,
+        company_id: id,
+      });
+
       console.log(data);
     } catch (e) {
       console.log(e);

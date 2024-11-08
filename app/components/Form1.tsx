@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetSuppliersOptionsQuery } from "@/lib/features/api/apiSlice";
@@ -19,7 +19,8 @@ type FormData = {
   sub_group_description: string;
 };
 function Form() {
-  const { data: session, status } = useSession();
+  const axiosAuth = useAxiosAuth();
+
   const form = useForm<FormData>();
   const router = useRouter();
   const { register, handleSubmit, formState, reset, setError } = form;
@@ -31,26 +32,11 @@ function Form() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/suppliers/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: session?.user?.access,
-          },
-        }
-      );
+      const response = await axiosAuth.post("/api/suppliers/", data);
       localStorage.setItem("companyId", response.data.id);
       console.log("response data", response.data);
     } catch (e) {
       console.log(data);
-      if (axios.isAxiosError(e)) {
-        if (e.response?.status === 401) {
-          // If token expired, log the user out
-          signOut({ callbackUrl: "/auth/login" }); // Redirect to login page after sign out
-        }
-      }
 
       console.log(e);
       setError("root", {

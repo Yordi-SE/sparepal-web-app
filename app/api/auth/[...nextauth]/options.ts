@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { JWT } from "next-auth/jwt";
 import { Session } from "next-auth";
+import { AuthenticatedUser } from "@/types/next-auth";
 
 export const options = {
   providers: [
@@ -32,8 +33,6 @@ export const options = {
             return response.data;
           }
         } catch (error) {
-          console.log("Error caught in authorize:", error.response.data); // Add log here to ensure error is caught
-
           if (axios.isAxiosError(error)) {
             if (error.response) {
               if (
@@ -77,7 +76,7 @@ export const options = {
     },
     async session({ session, token }: { session: Session; token: JWT }) {
       // Pass user ID to session object
-      session.user = token.userData;
+      session.user = token.userData as AuthenticatedUser;
       return session;
     },
   },
