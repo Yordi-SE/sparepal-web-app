@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { SessionProvider } from "next-auth/react";
+
 import StoreProvider from "./StoreProvider";
+import NextAuthProvider from "./NextAuthProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -45,7 +48,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#080303] overflow-x-hidden`}
       >
-        <StoreProvider> {children}</StoreProvider>
+        <NextAuthProvider>
+          <StoreProvider> {children}</StoreProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

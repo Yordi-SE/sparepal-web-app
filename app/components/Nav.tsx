@@ -9,8 +9,12 @@ import {
 import { cn } from "@/lib/utils";
 
 import Link from "next/link";
+import { AppProps } from "next/app";
+
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { SessionProvider, useSession } from "next-auth/react";
+
 export const navItems = [
   { name: "Home", link: "#home" },
 
@@ -44,6 +48,28 @@ export const FloatingNav = ({
   }[];
   className?: string;
 }) => {
+  const { data: session, status } = useSession();
+  console.log(session, status);
+  const isSupplier = session?.user?.user?.is_supplier;
+  const filteredNavItems = navItems.filter((item) => {
+    if (status === "authenticated") {
+      if (item.name === "Buy") {
+        // Show "Buy" only if the user is authenticated and NOT a supplier
+        return !isSupplier;
+      }
+
+      // Show "Supply" only if the user is a supplier, else hide it
+      if (item.name === "Supply") {
+        return isSupplier;
+      }
+
+      // Show all other items if the user is authenticated
+      return true;
+    }
+
+    // If user is not authenticated, show all except "Buy" and "Supply"
+    return item.name !== "Buy" && item.name !== "Supply";
+  });
   const [toggle, setToggle] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -152,7 +178,8 @@ export const FloatingNav = ({
                 />
               </Link>
             )}
-            {navItems.map(
+
+            {filteredNavItems.map(
               (
                 navItem: {
                   name: string;
@@ -161,22 +188,40 @@ export const FloatingNav = ({
                 },
                 idx: number
               ) => (
-                <>
-                  <Link
-                    key={`link=${idx}`}
-                    href={navItem.link}
-                    className={cn(
-                      "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
-                    )}
-                  >
-                    {/* add !cursor-pointer */}
-                    {/* remove hidden sm:block for the mobile responsive */}
-                    <span className=" text-sm !cursor-pointer">
-                      {navItem.name}
-                    </span>
-                  </Link>
-                </>
+                <Link
+                  key={`link=${idx}`}
+                  href={navItem.link}
+                  className={cn(
+                    "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
+                  )}
+                >
+                  {/* add !cursor-pointer */}
+                  {/* remove hidden sm:block for the mobile responsive */}
+                  <span className=" text-sm !cursor-pointer">
+                    {navItem.name}
+                  </span>
+                </Link>
               )
+            )}
+            {status == "authenticated" && (
+              <Link
+                href="/api/auth/signout"
+                className={cn(
+                  "relative  items-center  flex space-x-1 text-white bg-black p-1 text-md hover:bg-white hover:text-neutral-500 rounded-lg"
+                )}
+              >
+                Logout
+              </Link>
+            )}
+            {status == "unauthenticated" && (
+              <Link
+                href="/api/auth/signin"
+                className={cn(
+                  "relative  items-center  flex space-x-1 text-white bg-black p-1 text-md hover:bg-white hover:text-neutral-500 rounded-lg"
+                )}
+              >
+                Login
+              </Link>
             )}
           </div>
         )}

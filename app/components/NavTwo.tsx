@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 export const NavTwoItems = [
   { name: "Home", link: "/" },
@@ -49,6 +50,28 @@ export const FloatingNavTwo = ({
   const [windowHeight, setWindowHeight] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
 
+  const { data: session, status } = useSession();
+  console.log(session, status);
+  const isSupplier = session?.user?.user?.is_supplier;
+  const filteredNavItems = NavTwoItems.filter((item) => {
+    if (status === "authenticated") {
+      if (item.name === "Buy") {
+        // Show "Buy" only if the user is authenticated and NOT a supplier
+        return !isSupplier;
+      }
+
+      // Show "Supply" only if the user is a supplier, else hide it
+      if (item.name === "Supply") {
+        return isSupplier;
+      }
+
+      // Show all other items if the user is authenticated
+      return true;
+    }
+
+    // If user is not authenticated, show all except "Buy" and "Supply"
+    return item.name !== "Buy" && item.name !== "Supply";
+  });
   useEffect(() => {
     setWindowHeight(window.innerHeight);
     const handleScroll = () => {
@@ -146,7 +169,7 @@ export const FloatingNavTwo = ({
                 />
               </Link>
             )}
-            {NavTwoItems.map(
+            {filteredNavItems.map(
               (
                 NavTwoItem: {
                   name: string;
@@ -171,6 +194,26 @@ export const FloatingNavTwo = ({
                   </Link>
                 </>
               )
+            )}
+            {status == "authenticated" && (
+              <Link
+                href="/api/auth/signout"
+                className={cn(
+                  "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
+                )}
+              >
+                Logout
+              </Link>
+            )}
+            {status == "unauthenticated" && (
+              <Link
+                href="/api/auth/signin"
+                className={cn(
+                  "relative dark:text-neutral-50 items-center  flex space-x-1 text-white dark:hover:text-neutral-300 hover:text-neutral-500"
+                )}
+              >
+                Login
+              </Link>
             )}
           </div>
         )}

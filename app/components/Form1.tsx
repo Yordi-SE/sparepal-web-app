@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetSuppliersOptionsQuery } from "@/lib/features/api/apiSlice";
+import { signOut, useSession } from "next-auth/react";
 type FormData = {
   company_name: string;
   tin_number: string;
@@ -18,6 +19,7 @@ type FormData = {
   sub_group_description: string;
 };
 function Form() {
+  const { data: session, status } = useSession();
   const form = useForm<FormData>();
   const router = useRouter();
   const { register, handleSubmit, formState, reset, setError } = form;
@@ -35,6 +37,7 @@ function Form() {
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: session?.user?.access,
           },
         }
       );
@@ -42,6 +45,12 @@ function Form() {
       console.log("response data", response.data);
     } catch (e) {
       console.log(data);
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 401) {
+          // If token expired, log the user out
+          signOut({ callbackUrl: "/auth/login" }); // Redirect to login page after sign out
+        }
+      }
 
       console.log(e);
       setError("root", {
