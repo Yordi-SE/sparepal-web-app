@@ -1,14 +1,22 @@
 "use client";
 
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function VerificationSentPage() {
   const router = useRouter();
+  const { data: session } = useSession();
 
   const [isResending, setIsResending] = useState(false);
   const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
+  useEffect(() => {
+    if (session) {
+      router.push("/home");
+    }
+  }, []);
   const handleLoginRedirect = () => {
     router.push("/auth/login"); // Adjust path based on your app's routing
   };
@@ -19,8 +27,6 @@ export default function VerificationSentPage() {
     // Simulate an API call to resend the verification email
 
     try {
-      const email = localStorage.getItem("email");
-      console.log(email);
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/registration/resend-email/`,
         {
@@ -51,15 +57,34 @@ export default function VerificationSentPage() {
           Please check your inbox and follow the instructions to verify your
           account.
         </p>
+        <input
+          type="email"
+          className="mt-4 w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          placeholder="Enter your email"
+          onChange={(e) => {
+            e.preventDefault();
 
+            function validateEmail(email: string) {
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              return emailRegex.test(email);
+            }
+            if (validateEmail(e.target.value)) {
+              setEmail(e.target.value);
+            } else {
+              setEmail("");
+            }
+          }}
+        />
         <button
           onClick={handleResendEmail}
-          disabled={isResending}
+          disabled={isResending || !email}
           className={`mt-6 w-full px-4 py-2 text-white font-semibold rounded ${
-            isResending ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
-          } focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
+            isResending || email !== ""
+              ? "bg-indigo-600 hover:bg-indigo-700"
+              : "bg-gray-300 text-gray-50"
+          } focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 `}
         >
-          {isResending ? "Resending..." : "Resend Email"}
+          {isResending ? "Resending..." : "Resend Verification"}
         </button>
 
         {message && <p className="mt-4 text-sm text-green-600">{message}</p>}

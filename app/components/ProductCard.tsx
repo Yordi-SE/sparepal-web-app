@@ -21,7 +21,7 @@ function ProductCard({
   }, []);
   return (
     <div
-      className="w-[250px] xs:w-[350px] lg:w-[400px] md:w-[350px] sm:w-[400px] gap-1 h-fit lg:p-2 p-1 sm:gap-2 border shadow-slate-950 shadow-lg  bg-transparent text-white rounded-2xl m-auto "
+      className="w-[250px] xs:w-[350px] lg:w-[400px] md:w-[350px] sm:w-[400px] gap-1 h-fit lg:p-2 p-1 sm:gap-2 border shadow-slate-950 shadow-lg  bg-transparent dark:text-gray-800 text-white rounded-2xl m-auto "
       data-aos={product.aos}
     >
       <div className="sm:min-w-[50%] min-w-[50%] h-[150px]  sm:h-[200px]  rounded-xl float-left">

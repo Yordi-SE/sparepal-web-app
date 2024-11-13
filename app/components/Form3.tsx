@@ -23,10 +23,7 @@ function ManagerForm() {
         ...data,
         company_id: id,
       });
-
-      console.log(data);
     } catch (e) {
-      console.log(e);
       setError("root", {
         type: "400",
         message: "Something went wrong, Please try again!",

@@ -35,12 +35,8 @@ function AddressForm() {
         ...data,
         company_id: id,
       };
-      console.log(newData);
       await axiosAuth.post("/api/company-detail-address/", newData);
-
-      console.log(data);
     } catch (e) {
-      console.log(e);
       setError("root", {
         type: "400",
         message: "Something went wrong, Please try again!",

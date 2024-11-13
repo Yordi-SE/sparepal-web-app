@@ -2,7 +2,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { JWT } from "next-auth/jwt";
 import { AuthOptions, Session } from "next-auth";
-import { AuthenticatedUser } from "@/types/next-auth";
 
 export const options: AuthOptions = {
   providers: [
@@ -29,7 +28,6 @@ export const options: AuthOptions = {
           );
 
           if (response.status === 200) {
-            console.log("User Exists");
             return response.data;
           }
         } catch (error) {
@@ -76,7 +74,7 @@ export const options: AuthOptions = {
     },
     async session({ session, token }: { session: Session; token: JWT }) {
       // Pass user ID to session object
-      session.user = token.userData as AuthenticatedUser;
+      session.user = token.userData;
       return session;
     },
   },

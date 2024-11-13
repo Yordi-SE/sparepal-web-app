@@ -33,11 +33,7 @@ function Form() {
     try {
       const response = await axiosAuth.post("/api/suppliers/", data);
       localStorage.setItem("companyId", response.data.id);
-      console.log("response data", response.data);
     } catch (e) {
-      console.log(data);
-
-      console.log(e);
       setError("root", {
         type: "400",
         message: "Something went wrong, Please try again!",

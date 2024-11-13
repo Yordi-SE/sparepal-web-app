@@ -17,8 +17,6 @@ export const useRefreshToken = () => {
       if (session) session.user.access = res.data.access;
       else signIn();
     } catch (error) {
-      console.error("Failed to refresh token:", error);
-
       // Handle specific cases of error if needed
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
@@ -35,7 +33,6 @@ export const useRefreshToken = () => {
           );
         }
       } else {
-        console.error("Unexpected error:", error);
         alert("An unexpected error occurred.");
       }
     }

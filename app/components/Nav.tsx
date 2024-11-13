@@ -15,15 +15,13 @@ import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 
 export const navItems = [
-  { name: "Home", link: "#home" },
+  { name: "Home", link: "/home" },
 
   { name: "Products", link: "#products" },
   { name: "About Us", link: "#about" },
 
   { name: "Contact Us", link: "#contact" },
   { name: "Supply", link: "/suppliers_form" },
-
-  { name: "Buy", link: "#buy" },
 ];
 
 function Nav() {
@@ -48,7 +46,6 @@ export const FloatingNav = ({
   className?: string;
 }) => {
   const { data: session, status } = useSession();
-  console.log(session, status);
   const isSupplier = session?.user?.user?.is_supplier;
   const filteredNavItems = navItems.filter((item) => {
     if (status === "authenticated") {

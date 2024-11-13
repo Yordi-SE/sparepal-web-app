@@ -13,15 +13,13 @@ import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 
 export const NavTwoItems = [
-  { name: "Home", link: "/" },
+  { name: "Home", link: "/home" },
 
   { name: "Products", link: "/#products" },
   { name: "About Us", link: "/#about" },
 
   { name: "Contact Us", link: "/#contact" },
   { name: "Supply", link: "/suppliers_form" },
-
-  { name: "Buy", link: "#buy" },
 ];
 
 function NavTwo() {
@@ -51,7 +49,6 @@ export const FloatingNavTwo = ({
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const { data: session, status } = useSession();
-  console.log(session, status);
   const isSupplier = session?.user?.user?.is_supplier;
   const filteredNavItems = NavTwoItems.filter((item) => {
     if (status === "authenticated") {

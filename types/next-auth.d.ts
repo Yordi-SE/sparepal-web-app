@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 interface UserProfile {
   avatar: string;
@@ -32,5 +33,12 @@ declare module "next-auth" {
   interface Session {
     user: AuthenticatedUser;
     expires: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    userData: AuthenticatedUser;
+    expiresAt: string; // or Date, if parsed
   }
 }

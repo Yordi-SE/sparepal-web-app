@@ -26,7 +26,6 @@ export default function LogoutPage() {
       // Optionally, redirect to the homepage or a custom page after logout
       router.push("/auth/login");
     } catch (err) {
-      console.error("Failed to log out:", err);
       setError("Failed to log out. Please try again.");
     } finally {
       setLoading(false);

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 function FrontPage({
   data,
@@ -91,9 +92,12 @@ function FrontPage({
               <p className="text-xs xs:text-sm text-wrap text-white">
                 {slide.sub_desc}
               </p>
-              <button className="bg-[#fffefe] p-1 rounded-lg text-sm text-black md:text-lg font-extrabold sm:pl-2 sm:pr-2 w-fit h-fit  sm:ml-9 mt-2 m-auto shadow-inner hover:border hover:border-white hover:bg-black hover:text-white">
+              <Link
+                href={"/#products"}
+                className="bg-[#fffefe] p-1 rounded-lg text-sm text-black md:text-lg font-extrabold sm:pl-2 sm:pr-2 w-fit h-fit  sm:ml-9 mt-2 m-auto shadow-inner hover:border hover:border-white hover:bg-black hover:text-white"
+              >
                 Discover Our Services
-              </button>
+              </Link>
             </div>
           </div>
         ))}
