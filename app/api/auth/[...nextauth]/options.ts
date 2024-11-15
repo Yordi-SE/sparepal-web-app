@@ -1,5 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
 import { JWT } from "next-auth/jwt";
 import { AuthOptions, Session } from "next-auth";
 
@@ -66,14 +68,29 @@ export const options: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }: { token: JWT; user?: any }) {
-      // Add user ID to token if available
       if (user) {
         token.userData = user;
       }
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
-      // Pass user ID to session object
+      const getExpiration = (token: string) => {
+        try {
+          const decoded = jwtDecode(token);
+          if (!decoded.exp) {
+            return null;
+          }
+          return decoded.exp * 1000;
+        } catch {
+          return null;
+        }
+      };
+
+      const refreshExpiration = getExpiration(token.userData.refresh);
+
+      if (refreshExpiration) {
+        session.expires = new Date(refreshExpiration).toISOString();
+      }
       session.user = token.userData;
       return session;
     },

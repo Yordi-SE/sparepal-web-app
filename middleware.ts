@@ -4,8 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   function middleware(req) {
-    console.log("token: ", req.nextauth.token);
-
     if (
       (req.nextUrl.pathname == "/suppliers_form" ||
         req.nextUrl.pathname == "/company_detail_form" ||
