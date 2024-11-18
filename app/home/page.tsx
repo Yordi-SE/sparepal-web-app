@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import Footer from "../components/Footer";
 import Profile from "./Profile";
 import { Product } from "@/lib/data";
@@ -12,6 +12,8 @@ import ProductCard from "../components/ProductCard";
 
 function HomePage() {
   const { data: session, status } = useSession();
+  const [isArticleVisible, setIsArticleVisible] = useState(false);
+
   const isSupplier = session?.user?.user.is_supplier;
   const userName = session?.user?.user.first_name || "User";
 
@@ -20,10 +22,25 @@ function HomePage() {
       <NavTwo />
 
       <div className="flex w-full">
-        <article className="prose lg:prose-xl w-full max-w-md  ">
+        <article
+          className={`prose lg:prose-xl bottom-0 w-full max-w-md bg-white fixed top-[75px] left-0 transform ${
+            isArticleVisible ? " translate-x-0 " : " -translate-x-full "
+          } transition-transform duration-300 ease-in-out z-50 lg:relative lg:top-0 lg:translate-x-0`}
+        >
           <Profile />
+          <button
+            onClick={() => setIsArticleVisible((prev) => !prev)}
+            className={`absolute top-[75px] ${
+              isArticleVisible
+                ? " right-4 text-white hover:text-gray-300 "
+                : " -right-10 text-gray-500 hover:text-gray-800 "
+            }  p-2   lg:hidden text-5xl`}
+          >
+            {isArticleVisible ? "<" : ">"}
+          </button>
         </article>
-        <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center w-full  pt-[75px]">
+
+        <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center w-full grow  pt-[75px]">
           {status == "authenticated" && (
             <header className="text-center my-10">
               <h1 className="text-5xl font-extrabold text-gray-800">
@@ -97,7 +114,7 @@ function RegularUserSection() {
           </Link>
         </div>
       </div>
-      <div className="dark grid grid-cols-1 sm:grid-cols-2 gap-3 ">
+      <div className="dark overflow-hidden flex flex-wrap gap-3 ">
         {Product.map((prod, index) => {
           return <ProductCard key={index} product={prod} />;
         })}
